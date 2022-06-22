@@ -1,11 +1,11 @@
 # About
 <img src = "https://i.imgur.com/0pZy9V2.png">
-steaL - The L Stands For Linux
-steaL is a free and opensource game-center and bittorrent client for Linux, steaL fetches all the repacks uploaded by [johncena141 on 1337x.to](https://1337x.to/user/johncena141/)
-just download the game and run it! everything is pre-configuired for you thank's to  johncena141 repacks!
+steaL - The L Stands For Linux <br />
+steaL is a free and opensource game-center and bittorrent client for Linux, steaL fetches all the repacks uploaded by [johncena141 on 1337x.to](https://1337x.to/user/johncena141/) <br />
+just download the game and run it! everything is pre-configuired for you thank's to  johncena141 repacks! <br />
 
 
-steaL's database gets updated weekly to fetch new released johncena141 repacks
+steaL's database gets updated weekly to fetch new released johncena141 repacks <br />
 
 # IMPORTANT
 
