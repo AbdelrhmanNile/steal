@@ -25,7 +25,7 @@ yay -S zpaq
 
 yay -S dwarfs
 
-sudo pacman -S fuse-overlaysfs
+sudo pacman -S fuse-overlayfs
 
 sudo pacman -S tcsh
 ```
