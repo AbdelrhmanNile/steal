@@ -25,6 +25,10 @@ sudo pacman -S wine-staging
 
 sudo pacman -S winetricks
 
+sudo pacman -S python-kivy
+
+sudo pacman -S xclip
+
 yay -S zpaq
 
 yay -S dwarfs
@@ -43,7 +47,7 @@ pip3 install pandas
 pip3 install pebble
 ```
 
-node.js:
+node:
 ```
 npm install webtorrent-cli -g
 ```
