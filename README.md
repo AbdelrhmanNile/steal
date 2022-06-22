@@ -19,6 +19,8 @@ Arch Linux:
 ```
 sudo pacman -S python
 
+sudo pacman -S sharutils
+
 yay -S zpaq
 
 yay -S dwarfs
