@@ -1,0 +1,53 @@
+#!/bin/bash
+
+APP_NAME="steal"
+PYTHON="NONE"
+# check if python3 is installed
+pyvers=$(python3 -V 2>&1)
+echo $pyvers
+regex="Python 3.*"
+if [[ $pyvers =~ $regex ]]
+then
+    PYTHON="python3"
+else
+    # check if python is installed
+    pyvers=$(python -V 2>&1)
+    if [[ $pyvers =~ $regex ]]
+    then
+        PYTHON="python"
+    fi
+fi
+if [[ $PYTHON != "NONE" ]]
+then
+    kivyimport=$(
+    $PYTHON 2>&1  <<EOF
+import kivy
+EOF
+    )
+    kivyregex=".*Kivy .*"
+    if ! [[ $kivyimport =~ $kivyregex ]]
+    then
+        echo "Python is installed, but Kivy is also required"
+        echo "Use you package Manager or 'apt-get' to install Kivy"
+        exit
+    fi
+else
+    echo "Python and Kivy are not installed, but are required for the $APP_NAME app"
+    echo "Use your Package Manager or 'apt-get' to install Python and Kivy"
+    exit
+fi
+
+match=$(grep --text --line-number '^PAYLOAD:$' $0 | cut -d ':' -f 1)
+payload_start=$((match + 1))
+tail -n +$payload_start $0 | uudecode
+rm -rf /tmp/$APP_NAME
+mkdir /tmp/$APP_NAME
+mv steal.tar /tmp/$APP_NAME
+cd /tmp/$APP_NAME
+tar xvf steal.tar
+$PYTHON main.py &
+exit
+
+
+
+PAYLOAD:
