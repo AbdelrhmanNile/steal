@@ -21,6 +21,10 @@ sudo pacman -S python
 
 sudo pacman -S sharutils
 
+sudo pacman -S wine-staging
+
+sudo pacman -S winetricks
+
 yay -S zpaq
 
 yay -S dwarfs
