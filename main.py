@@ -52,10 +52,7 @@ class DownloadBtn(Button):
             zpaq_task = multiprocessing.Process(
                 target=os.system, args=(f"{command}",)
             ).start()
-            if self.g_pltfrm == "wine":
-                start_script = "wstart.sh"
-            elif self.g_pltfrm == "native":
-                start_script = "nstart.sh"
+            start_script = f"{self.g_pltfrm[0]}start.sh"
 
         elif arc_type == "zst":
             ## extract zst and get folder name
@@ -69,10 +66,7 @@ class DownloadBtn(Button):
         else:
             ## dwarfs
             game_dir = self.get_game_dir_dwarfs()
-            if self.g_pltfrm == "wine":
-                start_script = "start.w.sh"
-            elif self.g_pltfrm == "native":
-                start_script = "start.n.sh"
+            start_script = f"start.{self.g_pltfrm[0]}.sh"
 
         params = f"{self.g_name},{self.g_cover},{app.conf['lib_path']}/{game_dir}/{start_script}\n"
 
@@ -148,8 +142,6 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
                 g_pltfrm=self.g_pltfrm,
             )
             app.Sm.gamescr.add_widget(app.Sm.gamescr.layout)
-        else:
-            pass
 
     def on_release(self):
         if self.g_magnet:
@@ -186,7 +178,7 @@ class Card(BoxLayout):
             start_script=start_script,
         )
         self.name = Label(
-            text=g_name if len(g_name) <= 13 else g_name[0:11] + "....",
+            text=g_name if len(g_name) <= 13 else g_name[:11] + "....",
             size_hint=(0.7, 0.1),
             padding=(0.2, 0),
         )
@@ -207,8 +199,7 @@ class SearchBar(TextInput):
 
     @concurrent.process
     def get_search(self, g_name):
-        response = self.api.search(g_name)
-        return response
+        return self.api.search(g_name)
 
     def on_text_validate(self):
         if self.text == "update":
@@ -308,7 +299,7 @@ class BrowseTabLayout(ScrollView):
     def add_cards(self):
         # task = self.get_db()
         self.response = self.get_db()
-        self.cards = list()
+        self.cards = []
         if self.response:
             threading.Thread(target=self.create_cards, name="create_cards").run()
 
@@ -317,8 +308,7 @@ class BrowseTabLayout(ScrollView):
 
     # @concurrent.process
     def get_db(self):
-        response = api.search("")
-        return response
+        return api.search("")
 
     def create_cards(self):
         for i in range(int(app.conf["num_of_cards"])):
@@ -341,7 +331,7 @@ class LibraryTabLayout(ScrollView):
         super(LibraryTabLayout, self).__init__()
         self.layout = StackLayout(size_hint_y=None)
         self.layout.bind(minimum_height=self.layout.setter("height"))
-        self.cards = list()
+        self.cards = []
 
         threading.Thread(target=self.create_cards, name="create_cards_lib").run()
 
