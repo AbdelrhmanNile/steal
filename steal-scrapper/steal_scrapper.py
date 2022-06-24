@@ -74,10 +74,8 @@ class Steal:
 
         for ul_tag in soup.find_all("ul", {"class": "list"}):
             for li_tag in ul_tag.find_all("li"):
-                for strong_tag in li_tag.find_all("strong"):
-                    leftside.append(strong_tag.text)
-                for span_tag in li_tag.find_all("span"):
-                    rightside.append(span_tag.text)
+                leftside.extend(strong_tag.text for strong_tag in li_tag.find_all("strong"))
+                rightside.extend(span_tag.text for span_tag in li_tag.find_all("span"))
 
         combined = np.column_stack([leftside, rightside])
 
