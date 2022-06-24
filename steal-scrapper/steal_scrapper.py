@@ -14,17 +14,27 @@ from pymongo import MongoClient
 
 
 class Steal:
-    def __init__(self, csv_name, page_limit, twitch_secret ,db_passwd, pushdb=False):
+    def __init__(
+        self,
+        csv_name,
+        page_limit,
+        twitch_client_id,
+        twitch_client_secret,
+        db_passwd,
+        pushdb=False,
+    ):
         self.start_page_num = 1
         self.scraper = cfscrape.create_scraper()
         self.csv_name = csv_name
         self.page_limit = page_limit
-        self.twitch_secret = twitch_secret
+        self.twitch_client_id = twitch_client_id
+        self.twitch_client_secret = twitch_client_secret
         self.reset_lists()
 
         ## mongo database
         self.pushdb = pushdb
         self.db_passwd = db_passwd
+        ## change the link to your own DO NOT HARD CODE THE PASSWORD
         self.cluster = f"mongodb+srv://steal:{self.db_passwd}@cluster0.qvfna.mongodb.net/?retryWrites=true&w=majority"
         self.client = MongoClient(self.cluster)
         self.db = self.client.gamesdb
@@ -200,12 +210,12 @@ class Steal:
 
     def cover(self, game):
         r = requests.post(
-            f"https://id.twitch.tv/oauth2/token?client_id=uy9rkr8k2uhklu1qlsx4vr2vwbeues&client_secret={self.twitch_secret}&grant_type=client_credentials"
+            f"https://id.twitch.tv/oauth2/token?client_id={self.twitch_client_id}&client_secret={self.twitch_client_secret}&grant_type=client_credentials"
         )
 
         access_token = json.loads(r._content)["access_token"]
 
-        wrapper = IGDBWrapper("uy9rkr8k2uhklu1qlsx4vr2vwbeues", access_token)
+        wrapper = IGDBWrapper(f"{self.twitch_client_id}", access_token)
 
         # JSON API request
         byte_array = wrapper.api_request(
@@ -229,12 +239,12 @@ class Steal:
 
     def get_cover(self, cover_id):
         r = requests.post(
-            "https://id.twitch.tv/oauth2/token?client_id=uy9rkr8k2uhklu1qlsx4vr2vwbeues&client_secret=6qcwcwg0hshed4ljn3i6a7evtu33fk&grant_type=client_credentials"
+            f"https://id.twitch.tv/oauth2/token?client_id={self.twitch_client_id}&client_secret={self.twitch_client_secret}&grant_type=client_credentials"
         )
 
         access_token = json.loads(r._content)["access_token"]
 
-        wrapper = IGDBWrapper("uy9rkr8k2uhklu1qlsx4vr2vwbeues", access_token)
+        wrapper = IGDBWrapper(f"{self.twitch_client_id}", access_token)
 
         # JSON API request
         byte_array = wrapper.api_request(
