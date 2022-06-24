@@ -52,6 +52,10 @@ class DownloadBtn(Button):
             zpaq_task = multiprocessing.Process(
                 target=os.system, args=(f"{command}",)
             ).start()
+            if self.g_pltfrm == "wine":
+                start_script = "wstart.sh"
+            elif self.g_pltfrm == "native":
+                start_script = "nstart.sh"
 
         elif arc_type == "zst":
             ## extract zst and get folder name
@@ -60,20 +64,15 @@ class DownloadBtn(Button):
             zst_task = multiprocessing.Process(
                 target=os.system, args=(f"{command}",)
             ).start()
+            start_script = "start.sh"
+            
         else:
             ## dwarfs
             game_dir = self.get_game_dir_dwarfs()
-
-        if arc_type == "zpaq" and self.g_pltfrm == "wine":
-            start_script = "wstart.sh"
-        elif arc_type == "zpaq" and self.g_pltfrm == "native":
-            start_script = "nstart.sh"
-        elif arc_type == "zst":
-            start_script = "start.sh"
-        elif arc_type == "dwarfs" and self.g_pltfrm == "wine":
-            start_script = "start.w.sh"
-        elif arc_type == "dwarfs" and self.g_pltfrm == "native":
-            start_script = "start.n.sh"
+            if self.g_pltfrm == "wine":
+                start_script = "start.w.sh"
+            elif self.g_pltfrm == "native":
+                start_script = "start.n.sh"
 
         params = f"{self.g_name},{self.g_cover},{app.conf['lib_path']}/{game_dir}/{start_script}\n"
 
