@@ -62,7 +62,7 @@ class DownloadBtn(Button):
                 target=os.system, args=(f"{command}",)
             ).start()
             start_script = "start.sh"
-            
+
         else:
             ## dwarfs
             game_dir = self.get_game_dir_dwarfs()

@@ -15,36 +15,14 @@ please read [johncena141's documents](https://github.com/jc141x/jc141-bash/tree/
 
 # Dependencies
 
-Arch Linux:
+Arch Linux: (using paru)
 ```
-sudo pacman -S python
-
-sudo pacman -S sharutils
-
-sudo pacman -S wine-staging
-
-sudo pacman -S winetricks
-
-sudo pacman -S python-kivy
-
-sudo pacman -S xclip
-
-yay -S zpaq
-
-yay -S dwarfs
-
-sudo pacman -S fuse-overlayfs
-
-sudo pacman -S tcsh
+paru -S python sharutils wine-staging python-kivy xclip zpaq dwarfs fuse-overlays tcsh
 ```
 
 python modules:
 ```
-pip3 install kivy
-
-pip3 install pandas
-
-pip3 install pebble
+pip3 install -r requirements.txt
 ```
 
 node:

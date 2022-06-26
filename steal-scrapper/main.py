@@ -25,7 +25,7 @@ scrapper = steal_scrapper.Steal(
     num_of_pages,
     twitch_client_id=twitch_client_id,
     twitch_client_secret=twitch_client_secret,
-    db_passwd=passwd,
+    db_passwd=mongodb_passwd,
     pushdb=push_to_db,
 )
 
