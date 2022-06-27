@@ -21,7 +21,7 @@ from pandas import read_csv
 from pebble import concurrent
 
 
-Window.size = (1881, 996)
+Window.size = (1200, 700)
 ############ CUSTOM ELEMENTS ###################
 
 
@@ -364,21 +364,21 @@ class GameDetailsLayout(FloatLayout):
         self.g_pltfrm = g_pltfrm
 
         self.cover = AsyncImage(
-            source=g_cover_url, size_hint=(0.7, 0.7), pos=(-290, 140)
+            source=g_cover_url, size_hint=(0.58, 0.58), pos=(-180, 140)
         )
         self.back_to_browse_btn = BackToBrowseBtn(
-            text="back", size_hint=(None, None), size=(100, 50), pos=(100, 900)
+            text="back", size_hint=(0.08, 0.05), pos=(15, 650)
         )
-        self.add_widget(self.back_to_browse_btn)
         self.add_widget(self.cover)
+        self.add_widget(self.back_to_browse_btn)
 
-        self.labelg_name = Label(text=self.g_name, pos=(300, 315), font_size=70)
+        self.labelg_name = Label(text=self.g_name, pos=(70, 175), font_size=45)
         self.add_widget(self.labelg_name)
 
         self.g_size = Label(
             text=f"Size: {self.g_size}\nPlatform: {self.g_pltfrm}",
-            pos=(-50, 200),
-            font_size=50,
+            pos=(-5, 100),
+            font_size=30,
         )
         self.add_widget(self.g_size)
 
@@ -387,9 +387,8 @@ class GameDetailsLayout(FloatLayout):
             magnet=self.g_magnet,
             cover=g_cover_url,
             pltfrm=g_pltfrm,
-            size_hint=(None, None),
-            size=(100, 50),
-            pos=(1600, 150),
+            size_hint=(0.08, 0.05),
+            pos=(950, 130),
         )
         self.add_widget(self.download_btn)
 
