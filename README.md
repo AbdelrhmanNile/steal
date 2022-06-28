@@ -17,7 +17,7 @@ please read [johncena141's documents](https://github.com/jc141x/jc141-bash/tree/
 
 Arch Linux: (using paru)
 ```
-paru -S python sharutils wine-staging python-kivy xclip zpaq dwarfs-bin fuse-overlays tcsh
+paru -S python sharutils wine-staging python-kivy xclip zpaq dwarfs-bin fuse-overlayfs tcsh
 ```
 
 python modules:
