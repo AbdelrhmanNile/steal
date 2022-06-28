@@ -16,7 +16,7 @@ please read [johncena141's documents](https://github.com/jc141x/jc141-bash/tree/
 # Install on Arch distros
 on arch linux distros you can install steaL from [pirate-repo](https://github.com/AbdelrhmanNile/pirate-repo) using pacman
 
-1- add [pirate-repo](https://github.com/AbdelrhmanNile/pirate-repo) to pacman
+1- add [pirate-repo](https://github.com/AbdelrhmanNile/pirate-repo) to pacman <br />
 2- install steal
 ```
 sudo pacman -S steal
