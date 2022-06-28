@@ -148,7 +148,11 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
             app.Sm.transition = SlideTransition(direction="left", duration=0.25)
             app.Sm.current = "game_screen"
         else:
-            os.system(f"sh {self.start_script}")
+            self.launch_game()
+
+    @concurrent.process
+    def launch_game(self):
+        os.system(f"sh {self.start_script}")
 
 
 class Card(BoxLayout):
