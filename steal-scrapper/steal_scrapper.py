@@ -74,7 +74,9 @@ class Steal:
 
         for ul_tag in soup.find_all("ul", {"class": "list"}):
             for li_tag in ul_tag.find_all("li"):
-                leftside.extend(strong_tag.text for strong_tag in li_tag.find_all("strong"))
+                leftside.extend(
+                    strong_tag.text for strong_tag in li_tag.find_all("strong")
+                )
                 rightside.extend(span_tag.text for span_tag in li_tag.find_all("span"))
 
         combined = np.column_stack([leftside, rightside])
@@ -172,6 +174,7 @@ class Steal:
                 "magnet": "",
                 "pltfrm": "",
                 "cover": "",
+                "summary": "",
             }
         ]
         df = pd.DataFrame(data)
@@ -217,7 +220,7 @@ class Steal:
 
         # JSON API request
         byte_array = wrapper.api_request(
-            "games", f'search "{game}"; fields cover; offset 0;'
+            "games", f'search "{game}"; fields cover, summary; offset 0;'
         )
         # parse into JSON however you like...
 
@@ -233,7 +236,7 @@ class Steal:
         df.reset_index(drop=True, inplace=True)
         # int(df['id'].values)
         print(df)
-        return self.get_cover(int(df["cover"][0]))
+        return self.get_cover(int(df["cover"][0])), df["summary"][0]
 
     def get_cover(self, cover_id):
         r = requests.post(
@@ -286,7 +289,7 @@ class Steal:
 
                 print(df[i]["no"])
 
-                df[i]["cover"] = self.cover(
+                df[i]["cover"], df[i]["summary"] = self.cover(
                     df[i]["name"].replace("–", "-").replace("’", "'")
                 )
             except KeyError:
