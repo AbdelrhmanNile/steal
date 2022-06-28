@@ -367,8 +367,12 @@ class GameDetailsLayout(FloatLayout):
         self.g_magnet = g_magnet
         self.g_pltfrm = g_pltfrm
 
+        self.game_info = BoxLayout(
+            orientation="vertical", size_hint=(0.2, 0.2), pos=(330, 430)
+        )
+
         self.cover = AsyncImage(
-            source=g_cover_url, size_hint=(0.58, 0.58), pos=(-180, 140)
+            source=g_cover_url, size_hint=(0.58, 0.58), pos=(-180, 140), padding=(50, 0)
         )
         self.back_to_browse_btn = BackToBrowseBtn(
             text="back", size_hint=(0.08, 0.05), pos=(15, 650)
@@ -376,15 +380,18 @@ class GameDetailsLayout(FloatLayout):
         self.add_widget(self.cover)
         self.add_widget(self.back_to_browse_btn)
 
-        self.labelg_name = Label(text=self.g_name, pos=(70, 175), font_size=45)
-        self.add_widget(self.labelg_name)
+        self.labelg_name = Label(text=self.g_name, font_size=30, size_hint=(1, 0.01))
+        self.game_info.add_widget(self.labelg_name)
 
         self.g_size = Label(
             text=f"Size: {self.g_size}\nPlatform: {self.g_pltfrm}",
-            pos=(-5, 100),
             font_size=30,
+            size_hint=(1, 0.01),
         )
-        self.add_widget(self.g_size)
+        self.game_info.add_widget(self.g_size)
+        # self.game_info.add_widget(Button(text="1", size_hint=(1, 0.01)))
+        # self.game_info.add_widget(Button(text="2", size_hint=(1, 0.01)))
+        self.add_widget(self.game_info)
 
         self.download_btn = DownloadBtn(
             name=self.g_name,
@@ -445,7 +452,7 @@ class StealApp(App):
 
     def check_lib(self):
         if not os.path.isfile(f"{self.steal_path}/library.csv"):
-            params = "name,cover,script"
+            params = "name,cover,script\n"
 
             with open(f"{self.steal_path}/library.csv", "a") as file:
                 file.write(params)
