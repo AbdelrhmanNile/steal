@@ -13,11 +13,30 @@ steaL's database gets updated weekly to fetch new released johncena141 repacks <
 
 please read [johncena141's documents](https://github.com/jc141x/jc141-bash/tree/master/setup) to understand more about how their repacks work, and double check the dependencies for their repacks
 
-# Dependencies
+# Install on Arch distros
+on arch linux distros you can install steaL from [pirate-repo](https://github.com/AbdelrhmanNile/pirate-repo) using pacman
 
-Arch Linux: (using paru)
+1- add [pirate-repo](https://github.com/AbdelrhmanNile/pirate-repo) to pacman
+2- install steal
 ```
-paru -S python sharutils wine-staging python-kivy xclip zpaq dwarfs-bin fuse-overlayfs tcsh
+sudo pacman -S steal
+```
+3- install dwarfs-bin using an AUR helper i.e. yay / paru
+```
+paru -S dwarfs-bin
+```
+
+
+
+# Build and Install from source
+
+- Install Dependencies [Arch Linux]:
+
+```
+sudo pacman -S python sharutils wine-staging python-kivy xclip zpaq fuse-overlayfs tcsh
+```
+```
+paru -S dwarfs-bin
 ```
 
 python modules:
@@ -30,7 +49,7 @@ node:
 npm install webtorrent-cli -g
 ```
 
-# Build and Install
+- Build and Install:
 
 download:
 ```
