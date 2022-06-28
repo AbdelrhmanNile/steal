@@ -372,7 +372,7 @@ class GameDetailsLayout(FloatLayout):
         )
 
         self.cover = AsyncImage(
-            source=g_cover_url, size_hint=(0.58, 0.58), pos=(-180, 140), padding=(50, 0)
+            source=g_cover_url, size_hint=(0.58, 0.58), pos=(-180, 140)
         )
         self.back_to_browse_btn = BackToBrowseBtn(
             text="back", size_hint=(0.08, 0.05), pos=(15, 650)
