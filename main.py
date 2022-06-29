@@ -121,7 +121,15 @@ class BackToBrowseBtn(Button):
 
 class BtnAsyncImage(ButtonBehavior, AsyncImage):
     def __init__(
-        self, g_cover_url, g_name, g_size, g_magnet, g_pltfrm, start_script, **kwargs
+        self,
+        g_cover_url,
+        g_name,
+        g_size,
+        g_magnet,
+        g_pltfrm,
+        start_script,
+        g_summary,
+        **kwargs,
     ):
         super(BtnAsyncImage, self).__init__(**kwargs)
         self.g_cover_url = g_cover_url
@@ -130,6 +138,7 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
         self.g_magnet = g_magnet
         self.g_pltfrm = g_pltfrm
         self.start_script = start_script
+        self.g_summary = g_summary
 
     def on_press(self):
         if self.g_magnet:
@@ -140,6 +149,7 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
                 g_size=self.g_size,
                 g_magnet=self.g_magnet,
                 g_pltfrm=self.g_pltfrm,
+                g_summary=self.g_summary,
             )
             app.Sm.gamescr.add_widget(app.Sm.gamescr.layout)
 
@@ -164,6 +174,7 @@ class Card(BoxLayout):
         g_magnet=None,
         g_pltfrm=None,
         start_script=None,
+        g_summary=None,
         **kwargs,
     ):
         super(Card, self).__init__(**kwargs)
@@ -180,6 +191,7 @@ class Card(BoxLayout):
             g_magnet=g_magnet,
             g_pltfrm=g_pltfrm,
             start_script=start_script,
+            g_summary=g_summary,
         )
         self.name = Label(
             text=g_name if len(g_name) <= 13 else g_name[:11] + "....",
@@ -237,6 +249,7 @@ class SearchBar(TextInput):
                         g_size=game["size"],
                         g_magnet=game["magnet"],
                         g_pltfrm=game["pltfrm"],
+                        g_summary=game["summary"],
                         size_hint_y=None,
                         height=40,
                     )
@@ -324,6 +337,7 @@ class BrowseTabLayout(ScrollView):
                     g_size=game["size"],
                     g_magnet=game["magnet"],
                     g_pltfrm=game["pltfrm"],
+                    g_summary=game["summary"],
                     size_hint_y=None,
                     height=40,
                 )
@@ -360,35 +374,58 @@ class LibraryTabLayout(ScrollView):
 
 
 class GameDetailsLayout(FloatLayout):
-    def __init__(self, g_cover_url, g_name, g_size, g_magnet, g_pltfrm, **kwargs):
+    def __init__(
+        self, g_cover_url, g_name, g_size, g_magnet, g_pltfrm, g_summary, **kwargs
+    ):
         super(GameDetailsLayout, self).__init__(**kwargs)
         self.g_name = g_name
         self.g_size = g_size
         self.g_magnet = g_magnet
         self.g_pltfrm = g_pltfrm
+        self.g_summary = g_summary
 
-        self.game_info = BoxLayout(
-            orientation="vertical", size_hint=(0.2, 0.2), pos=(330, 430)
-        )
+        self.game_info = BoxLayout(orientation="vertical", size_hint=(0.2, 0.2))
+        self.game_info.pos_hint = {"center_x": 0.5, "top": 0.9}
 
         self.cover = AsyncImage(
-            source=g_cover_url, size_hint=(0.58, 0.58), pos=(-180, 140)
+            source=g_cover_url,
+            size_hint=(0.58, 0.58),
+            pos=(-180, 140),
         )
+        # pos=(-180, 140)
         self.back_to_browse_btn = BackToBrowseBtn(
             text="back", size_hint=(0.08, 0.05), pos=(15, 650)
         )
         self.add_widget(self.cover)
         self.add_widget(self.back_to_browse_btn)
 
-        self.labelg_name = Label(text=self.g_name, font_size=30, size_hint=(1, 0.01))
-        self.game_info.add_widget(self.labelg_name)
-
-        self.g_size = Label(
-            text=f"Size: {self.g_size}\nPlatform: {self.g_pltfrm}",
+        self.labelg_name = Label(
+            text=self.g_name,
             font_size=30,
             size_hint=(1, 0.01),
+            pos_hint={"x": -0.077, "y": 0.85},
+            text_size=(1000, None),
         )
-        self.game_info.add_widget(self.g_size)
+        self.add_widget(self.labelg_name)
+
+        self.g_summary_label = Label(
+            text=f"{self.g_summary}",
+            font_size=19,
+            size_hint=(1, 0.01),
+            pos_hint={"x": 0.12, "y": 0.65},
+            text_size=(800, None),
+        )
+
+        self.add_widget(self.g_summary_label)
+
+        self.g_size_pltfrm_label = Label(
+            text=f"{self.g_size} | {self.g_pltfrm}",
+            font_size=17,
+            size_hint=(1, 0.01),
+            pos_hint={"x": 0.33, "y": 0.28},
+        )
+
+        self.add_widget(self.g_size_pltfrm_label)
         # self.game_info.add_widget(Button(text="1", size_hint=(1, 0.01)))
         # self.game_info.add_widget(Button(text="2", size_hint=(1, 0.01)))
         self.add_widget(self.game_info)
