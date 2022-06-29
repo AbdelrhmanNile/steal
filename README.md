@@ -21,9 +21,9 @@ on arch linux distros you can install steaL from [pirate-arch-repo](https://gith
 ```
 sudo pacman -S steal
 ```
-3- install dwarfs-bin using an AUR helper i.e. yay / paru
+3- install dwarfs-bin and zpaq using an AUR helper i.e. yay / paru
 ```
-paru -S dwarfs-bin
+paru -S dwarfs-bin zpaq
 ```
 
 
