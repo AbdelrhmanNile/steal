@@ -236,7 +236,10 @@ class Steal:
         df.reset_index(drop=True, inplace=True)
         # int(df['id'].values)
         print(df)
-        return self.get_cover(int(df["cover"][0])), df["summary"][0]
+        if self.get_cover(int(df["cover"][0])) != None:
+            return self.get_cover(int(df["cover"][0])), df["summary"][0]
+        else:
+            return "https://i.imgur.com/tbTWk2n.jpg", df["summary"][0]
 
     def get_cover(self, cover_id):
         r = requests.post(
