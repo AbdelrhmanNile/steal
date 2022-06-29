@@ -22,6 +22,7 @@ from pebble import concurrent
 
 
 Window.size = (1200, 700)
+Window.minimum_width, Window.minimum_height = Window.size
 ############ CUSTOM ELEMENTS ###################
 
 
@@ -210,6 +211,7 @@ class SearchBar(TextInput):
         self.foreground_color = (1, 1, 1, 1)
         self.hint_text = "Search..."
         self.hint_text_color = (1, 1, 1, 1)
+        self.padding_y = 11
 
         self.api = StealApi()
 
