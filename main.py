@@ -149,6 +149,9 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
         self.g_pltfrm = g_pltfrm
         self.start_script = start_script
         self.g_summary = g_summary
+        self.launch_game_proc = multiprocessing.Process(
+            target=self.launch_game, name="launch_game"
+        )
 
     def on_press(self):
         if self.g_magnet:
@@ -168,9 +171,22 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
             app.Sm.transition = SlideTransition(direction="left", duration=0.25)
             app.Sm.current = "game_screen"
         else:
-            self.launch_game()
+            try:
+                if not self.launch_game_proc.is_alive():
+                    self.launch_game_proc.start()
+                else:
+                    print(
+                        "WARNING: game process is still alive, cannot launch game twice"
+                    )
+            except AssertionError:
+                self.launch_game_proc.kill()
+                self.launch_game_proc.close()
+                self.launch_game_proc = multiprocessing.Process(
+                    target=self.launch_game, name="launch_game"
+                )
+                self.launch_game_proc.start()
 
-    @concurrent.process
+    # @concurrent.process
     def launch_game(self):
         os.system(f"sh {self.start_script}")
 
