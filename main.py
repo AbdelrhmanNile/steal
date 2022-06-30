@@ -19,10 +19,19 @@ import json
 import multiprocessing
 from pandas import read_csv
 from pebble import concurrent
+from kivy.config import Config
 
 
 Window.size = (1200, 700)
-Window.minimum_width, Window.minimum_height = Window.size
+_fixed_size = (1200, 700)
+
+
+def reSize(*args):
+    Window.size = _fixed_size
+    return True
+
+
+Window.bind(on_resize=reSize)
 ############ CUSTOM ELEMENTS ###################
 
 
@@ -184,9 +193,13 @@ class Card(BoxLayout):
         self.size = (170, 270)
         self.padding = (7, 7)
         self.cover = BtnAsyncImage(
-            source=str(cover_url),
+            source=cover_url
+            if cover_url != None
+            else "https://i.imgur.com/tbTWk2n.jpg",
             size_hint=(1, 1),
-            g_cover_url=cover_url,
+            g_cover_url=cover_url
+            if cover_url != None
+            else "https://i.imgur.com/tbTWk2n.jpg",
             g_name=g_name,
             g_size=g_size,
             g_magnet=g_magnet,
