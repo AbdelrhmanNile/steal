@@ -21,8 +21,8 @@ from pandas import read_csv
 from pebble import concurrent
 from kivy.config import Config
 
-#Disable multitouch
-Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
+# Disable multitouch
+Config.set("input", "mouse", "mouse,multitouch_on_demand")
 
 Window.size = (1200, 700)
 _fixed_size = (1200, 700)
@@ -119,10 +119,20 @@ class DownloadBtn(Button):
 
     def on_press(self):
         self.disabled = True
-        self.size_hint_min_x = (200)
-        self.right = (1000)
-        self.text = "Download in progress..."
-        download_task = multiprocessing.Process(target=self.download).start()
+        self.size_hint_min_x = 200
+        self.right = 1000
+        is_in_lib = False
+        for i in range(len(app.lib)):
+            if self.g_name == app.lib["name"][i]:
+                is_in_lib = True
+                self.text = "game aleady in library!"
+                break
+
+        if is_in_lib == False:
+            self.text = "Download in progress..."
+            download_task = multiprocessing.Process(target=self.download)
+            download_task.run()
+
 
 class BackToBrowseBtn(Button):
     def __init__(self, **kwargs):
@@ -132,6 +142,7 @@ class BackToBrowseBtn(Button):
     def on_release(self):
         app.Sm.transition = SlideTransition(direction="right", duration=0.25)
         app.Sm.current = "main_screen"
+
 
 class BtnAsyncImage(ButtonBehavior, AsyncImage):
     def __init__(
@@ -539,4 +550,6 @@ if __name__ == "__main__":
     for child in children:
         child.terminate()
 
+    os.system("clear")
     print("see you space cowboy...")
+    print("CTRL + c to exit")
