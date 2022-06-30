@@ -180,6 +180,7 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
                     )
             except AssertionError:
                 self.launch_game_proc.kill()
+                self.launch_game_proc.join()
                 self.launch_game_proc.close()
                 self.launch_game_proc = multiprocessing.Process(
                     target=self.launch_game, name="launch_game"
@@ -529,3 +530,9 @@ if __name__ == "__main__":
     api = StealApi()
     app = StealApp()
     app.run()
+
+    children = multiprocessing.active_children()
+    for child in children:
+        child.terminate()
+
+    print("see you space cowboy...")
