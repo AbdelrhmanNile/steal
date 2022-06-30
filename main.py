@@ -21,6 +21,8 @@ from pandas import read_csv
 from pebble import concurrent
 from kivy.config import Config
 
+#Disable multitouch
+Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 
 Window.size = (1200, 700)
 _fixed_size = (1200, 700)
