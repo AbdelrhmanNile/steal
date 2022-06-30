@@ -107,8 +107,11 @@ class DownloadBtn(Button):
         return None, "dwarfs"
 
     def on_press(self):
+        self.disabled = True
+        self.size_hint_min_x = (200)
+        self.right = (1000)
+        self.text = "Download in progress..."
         download_task = multiprocessing.Process(target=self.download).start()
-
 
 class BackToBrowseBtn(Button):
     def __init__(self, **kwargs):
@@ -118,7 +121,6 @@ class BackToBrowseBtn(Button):
     def on_release(self):
         app.Sm.transition = SlideTransition(direction="right", duration=0.25)
         app.Sm.current = "main_screen"
-
 
 class BtnAsyncImage(ButtonBehavior, AsyncImage):
     def __init__(
