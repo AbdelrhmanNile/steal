@@ -224,7 +224,7 @@ class SearchBar(TextInput):
         self.foreground_color = (1, 1, 1, 1)
         self.hint_text = "Search..."
         self.hint_text_color = (1, 1, 1, 1)
-
+        self.padding = (0, 11)
         self.api = StealApi()
 
     @concurrent.process
