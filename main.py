@@ -144,17 +144,10 @@ class DownloadBtn(Button):
         self.disabled = True
         self.size_hint_min_x = 200
         self.right = 1000
-        is_in_lib = False
-        for i in range(len(app.lib)):
-            if self.g_name == app.lib["name"][i]:
-                is_in_lib = True
-                self.text = "game aleady in library!"
-                break
-
-        if is_in_lib == False:
-            self.text = "Download in progress..."
-            download_task = multiprocessing.Process(target=self.download)
-            download_task.start()
+       
+        self.text = "Download in progress..."
+        download_task = multiprocessing.Process(target=self.download)
+        download_task.start()
 
 
 class BackToBrowseBtn(Button):
@@ -514,6 +507,14 @@ class GameDetailsLayout(FloatLayout):
             pos=(950, 130),
         )
         self.add_widget(self.download_btn)
+        
+        for i in range(len(app.lib)):
+            if self.g_name == app.lib["name"][i]:
+                self.download_btn.disabled = True
+                self.download_btn.size_hint_min_x = 200
+                self.download_btn.right = 1000
+                self.download_btn.text = "game already in library!"
+                break
 
 
 class StealApp(App):
