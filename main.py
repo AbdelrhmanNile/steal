@@ -1,8 +1,4 @@
-from abc import update_abstractmethods
-from cgitb import text
-from dbm.ndbm import library
 import os
-from turtle import update, width
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -40,14 +36,13 @@ def reSize(*args):
 Window.bind(on_resize=reSize)
 ############ CUSTOM ELEMENTS ###################
 
+
 class UpdateBtn(Button):
     def __init__(self, **kwargs):
         super(UpdateBtn, self).__init__(**kwargs)
         self.background_color = (0.67, 0.70, 0.75, 1)
         self.text = "Update"
 
-
-    
     def Update(self):
         app.lib = read_csv(f"{app.steal_path}/library.csv")
         app.library.layout.clear_widgets()
@@ -62,9 +57,10 @@ class UpdateBtn(Button):
                     height=40,
                 )
             )
-            
+
     def on_press(self):
         self.Update()
+
 
 class DownloadBtn(Button):
     def __init__(self, name, magnet, cover, pltfrm, **kwargs):
@@ -160,7 +156,7 @@ class DownloadBtn(Button):
         if is_in_lib == False:
             self.text = "Download in progress..."
             download_task = multiprocessing.Process(target=self.download)
-            download_task.run()
+            download_task.start()
 
 
 class BackToBrowseBtn(Button):
@@ -296,9 +292,7 @@ class SearchBar(TextInput):
         task = self.get_search(self.text)
         response = task.result()
         app.browse.layout.clear_widgets()
-        num_cards = (
-            int(app.conf["num_of_cards"]) if self.text == "" else len(response)
-        )
+        num_cards = int(app.conf["num_of_cards"]) if self.text == "" else len(response)
 
         for i in range(num_cards):
             game = response[i]
@@ -351,25 +345,25 @@ class MainLayout(TabbedPanel):
 
         self.tab_width = None
         self.background_color = (0.12, 0.13, 0.16, 1)
-        
+
         self.browser = TabbedPanelHeader(text="Browse")
         self.browser.content = app.browse
         self.add_widget(self.browser)
         self.browser.size_hint_x = None
         self.browser.width = Window.width / 5
-        self.default_tab = self.browser 
+        self.default_tab = self.browser
 
         self.library = TabbedPanelHeader(text="Library")
         self.library.size_hint_x = None
         self.library.width = Window.width / 5
         self.library.content = app.library
         self.add_widget(self.library)
-        
+
         self.label = Label()
         self.label.size_hint_x = None
         self.label.width = 390
         self._tab_strip.add_widget(self.label)
-        
+
         self.update_btn = UpdateBtn()
         self.update_btn.size_hint_x = None
         self.update_btn.width = 100
@@ -442,7 +436,6 @@ class LibraryTabLayout(ScrollView):
         self.size_hint = (1, None)
         self.size = (Window.width, Window.height + 120)
         self.add_widget(self.layout)
-       
 
     def create_cards(self):
         for i in range(len(app.lib)):
