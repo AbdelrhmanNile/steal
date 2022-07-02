@@ -1,4 +1,8 @@
+from abc import update_abstractmethods
+from cgitb import text
+from dbm.ndbm import library
 import os
+from turtle import update, width
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -36,6 +40,31 @@ def reSize(*args):
 Window.bind(on_resize=reSize)
 ############ CUSTOM ELEMENTS ###################
 
+class UpdateBtn(Button):
+    def __init__(self, **kwargs):
+        super(UpdateBtn, self).__init__(**kwargs)
+        self.background_color = (0.67, 0.70, 0.75, 1)
+        self.text = "Update"
+
+
+    
+    def Update(self):
+        app.lib = read_csv(f"{app.steal_path}/library.csv")
+        app.library.layout.clear_widgets()
+        print(app.lib)
+        for i in range(len(app.lib)):
+            app.library.layout.add_widget(
+                Card(
+                    cover_url=app.lib["cover"][i],
+                    g_name=app.lib["name"][i],
+                    start_script=app.lib["script"][i],
+                    size_hint_y=None,
+                    height=40,
+                )
+            )
+            
+    def on_press(self):
+        self.Update()
 
 class DownloadBtn(Button):
     def __init__(self, name, magnet, cover, pltfrm, **kwargs):
@@ -256,7 +285,7 @@ class SearchBar(TextInput):
         self.foreground_color = (1, 1, 1, 1)
         self.hint_text = "Search..."
         self.hint_text_color = (1, 1, 1, 1)
-        self.padding = (0, 11)
+        self.padding = (10, 11)
         self.api = StealApi()
 
     @concurrent.process
@@ -264,43 +293,28 @@ class SearchBar(TextInput):
         return self.api.search(g_name)
 
     def on_text_validate(self):
-        if self.text == "update":
-            app.lib = read_csv(f"{app.steal_path}/library.csv")
-            app.library.layout.clear_widgets()
-            print(app.lib)
-            for i in range(len(app.lib)):
-                app.library.layout.add_widget(
-                    Card(
-                        cover_url=app.lib["cover"][i],
-                        g_name=app.lib["name"][i],
-                        start_script=app.lib["script"][i],
-                        size_hint_y=None,
-                        height=40,
-                    )
-                )
-        else:
-            task = self.get_search(self.text)
-            response = task.result()
-            app.browse.layout.clear_widgets()
-            num_cards = (
-                int(app.conf["num_of_cards"]) if self.text == "" else len(response)
-            )
+        task = self.get_search(self.text)
+        response = task.result()
+        app.browse.layout.clear_widgets()
+        num_cards = (
+            int(app.conf["num_of_cards"]) if self.text == "" else len(response)
+        )
 
-            for i in range(num_cards):
-                game = response[i]
-                app.browse.layout.add_widget(
-                    Card(
-                        cover_url=game["cover"],
-                        g_name=game["name"],
-                        g_size=game["size"],
-                        g_magnet=game["magnet"],
-                        g_pltfrm=game["pltfrm"],
-                        g_summary=game["summary"],
-                        size_hint_y=None,
-                        height=40,
-                    )
+        for i in range(num_cards):
+            game = response[i]
+            app.browse.layout.add_widget(
+                Card(
+                    cover_url=game["cover"],
+                    g_name=game["name"],
+                    g_size=game["size"],
+                    g_magnet=game["magnet"],
+                    g_pltfrm=game["pltfrm"],
+                    g_summary=game["summary"],
+                    size_hint_y=None,
+                    height=40,
                 )
-            app.lib = read_csv(f"{app.steal_path}/library.csv")
+            )
+        app.lib = read_csv(f"{app.steal_path}/library.csv")
 
 
 ########## SCREENS #################
@@ -335,18 +349,41 @@ class MainLayout(TabbedPanel):
     def __init__(self, **kwargs):
         super(MainLayout, self).__init__(**kwargs)
 
-        self.do_default_tab = True
-        self.default_tab_text = "Browse"
-
-        self.default_tab_content = app.browse
+        self.tab_width = None
         self.background_color = (0.12, 0.13, 0.16, 1)
+        
+        self.browser = TabbedPanelHeader(text="Browse")
+        self.browser.content = app.browse
+        self.add_widget(self.browser)
+        self.browser.size_hint_x = None
+        self.browser.width = Window.width / 5
+        self.default_tab = self.browser 
 
         self.library = TabbedPanelHeader(text="Library")
+        self.library.size_hint_x = None
+        self.library.width = Window.width / 5
         self.library.content = app.library
         self.add_widget(self.library)
-        self._tab_strip.add_widget(Label(text="                "))
-        self._tab_strip.add_widget(SearchBar())
-        self.tab_width = Window.width / 4
+        
+        self.label = Label()
+        self.label.size_hint_x = None
+        self.label.width = 390
+        self._tab_strip.add_widget(self.label)
+        
+        self.update_btn = UpdateBtn()
+        self.update_btn.size_hint_x = None
+        self.update_btn.width = 100
+        self._tab_strip.add_widget(self.update_btn)
+
+        self.label2 = Label()
+        self.label2.size_hint_x = None
+        self.label2.width = 20
+        self._tab_strip.add_widget(self.label2)
+
+        self.searchbar = SearchBar()
+        self._tab_strip.add_widget(self.searchbar)
+        self.searchbar.size_hint_x = None
+        self.searchbar.width = 200
 
 
 class BrowseTabLayout(ScrollView):
@@ -405,6 +442,7 @@ class LibraryTabLayout(ScrollView):
         self.size_hint = (1, None)
         self.size = (Window.width, Window.height + 120)
         self.add_widget(self.layout)
+       
 
     def create_cards(self):
         for i in range(len(app.lib)):
