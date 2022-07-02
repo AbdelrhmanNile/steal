@@ -218,7 +218,6 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
                 )
                 self.launch_game_proc.start()
 
-    # @concurrent.process
     def launch_game(self):
         os.system(f"sh {self.start_script}")
 
@@ -382,7 +381,6 @@ class BrowseTabLayout(ScrollView):
         self.add_widget(self.layout)
 
     def add_cards(self):
-        # task = self.get_db()
         self.response = self.get_db()
         self.cards = []
         if self.response:
@@ -391,7 +389,6 @@ class BrowseTabLayout(ScrollView):
             for card in self.cards:
                 self.layout.add_widget(card)
 
-    # @concurrent.process
     def get_db(self):
         return api.search("")
 
@@ -460,7 +457,7 @@ class GameDetailsLayout(FloatLayout):
             size_hint=(0.58, 0.58),
             pos=(-180, 140),
         )
-        # pos=(-180, 140)
+
         self.back_to_browse_btn = BackToBrowseBtn(
             text="back", size_hint=(0.08, 0.05), pos=(15, 650)
         )
@@ -494,8 +491,6 @@ class GameDetailsLayout(FloatLayout):
         )
 
         self.add_widget(self.g_size_pltfrm_label)
-        # self.game_info.add_widget(Button(text="1", size_hint=(1, 0.01)))
-        # self.game_info.add_widget(Button(text="2", size_hint=(1, 0.01)))
         self.add_widget(self.game_info)
 
         self.download_btn = DownloadBtn(
