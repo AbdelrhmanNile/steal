@@ -24,9 +24,7 @@ from kivy.config import Config
 # Disable multitouch
 Config.set("input", "mouse", "mouse,multitouch_on_demand")
 
-Window.size = (1200, 700)
-_fixed_size = (1200, 700)
-
+_fixed_size = Window.size = (1200, 700)
 
 def reSize(*args):
     Window.size = _fixed_size
