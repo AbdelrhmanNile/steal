@@ -308,7 +308,10 @@ class Steal:
         print(num)
         for i in range(num + 1):
             try:
-                self.gamesdb.insert_one(dict(data[i]))
+                if data[i]["pltfrm"] != "wine" and data[i]["pltfrm"] != "native":
+                    continue
+                else:
+                    self.gamesdb.insert_one(dict(data[i]))
             except KeyError:
                 continue
         print("pushing to db done")
