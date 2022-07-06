@@ -92,9 +92,9 @@ conf.json has two parameters:
 library.csv contains info about the games you download { name, cover url and launching script }
 
 # Usage
-just search for the game you want and downloaded it, wait until it finish extracting {zpaq takes time to extract, be patient}
+just search for the game you want and download it, wait until it finish extracting {zpaq takes time to extract, be patient}
 
-after it's done go to Library tab and type update in the search bar to refresh your game Library and make new downloaded games appear
+after it's done just click the update button to update the library and your game will be there
 
 to launch a game just click on it
 
