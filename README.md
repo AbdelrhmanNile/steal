@@ -105,12 +105,12 @@ Enjoy!!
 
 1- steal takes several seconds to launch, and it freezes for a second when you search for a game, it's all caused by the blocking Api calls that steal makes to fetch the data from the database
 
-i believe it could be solved by implementing the calls in a async way, if you can solve it please contribute and make a pull-request
+I believe it could be solved by implementing the calls in a async way, if you can solve it please contribute and make a pull-request
 
-2- when you download a new game it won't appear in Library tab unless you type update in the search bar or re-start steal
+2- when you download a new game it won't appear in the Library tab unless you click the update button or restart steal
 
-3- the UI is not hte most polished and sexy, in fact it's ugly, so if you can make it better you are very welcome to contribute :3
+3- the UI is not the most polished and sexy, in fact it's ugly, so if you can make it better you are very welcome to contribute :3
 
-4- source code is kinda a mess, i'll add more comments when i have time
+4- source code is kinda a mess, I'll add more comments when I have time
 
 you could say this is a beta release, it will get better in the future
