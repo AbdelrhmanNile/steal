@@ -14,7 +14,6 @@ from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 import threading
 from steal_db_api import StealApi
-import pwd
 import json
 import multiprocessing
 from pandas import read_csv
@@ -529,7 +528,7 @@ class StealApp(App):
 
     def init_steal(self):
         # get linux username
-        self.usr = pwd.getpwuid(os.getuid())[0]
+        self.usr = os.getlogin()
         # define config path
         self.steal_path = f"/home/{self.usr}/.config/steal"
         # if conf.json doesnt exist make it
