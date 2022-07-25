@@ -130,14 +130,11 @@ class DownloadBtn(Button):
             for filename in files:
                 if (
                     filename.find(self.g_name[1:].split(" ", 1)[0]) != -1
-                    and filename.find(".zpaq") != -1
                 ):
-                    return filename, "zpaq"
-                if (
-                    filename.find(self.g_name[1:].split(" ", 1)[0]) != -1
-                    and filename.find(".zst") != -1
-                ):
-                    return filename, "zst"
+                    if (filename.find(".zpaq") != -1):
+                        return filename, "zpaq"
+                    if (filename.find(".zst") != -1):
+                        return filename, "zst"
         return None, "dwarfs"
 
     def on_press(self):
@@ -541,22 +538,18 @@ class StealApp(App):
         self.lib = read_csv(f"{self.steal_path}/library.csv")
 
     def check_conf(self):  # function to check if conf path and file exit
-        if not os.path.isdir(self.steal_path):  # if path doesnt exit
-            os.makedirs(self.steal_path)  # make it
-            # config params
-            params = {"lib_path": f"/home/{self.usr}/Games", "num_of_cards": "50"}
-            # dump the config file
-            with open(f"{self.steal_path}/conf.json", "w") as file:
-                json.dump(params, file, indent=4)
-        elif os.path.exists(self.steal_path) and not os.path.isfile(
-            f"{self.steal_path}/conf.json"  # else if path exist but not config file
+        if os.path.exists(self.steal_path) and os.path.isfile(
+            f"{self.steal_path}/conf.json"  # if path and config file exist exit the function
         ):
-            params = {"lib_path": f"/home/{self.usr}/Games", "num_of_cards": "50"}
-            # dump config file
-            with open(f"{self.steal_path}/conf.json", "w") as file:
-                json.dump(params, file, indent=4)
-        else:  # else exit the function
             return
+
+        if not os.path.isdir(self.steal_path): # if path doesnt exit
+            os.makedirs(self.steal_path)  # make it
+        # config params
+        params = {"lib_path": f"/home/{self.usr}/Games", "num_of_cards": "50"}
+        # dump the config file
+        with open(f"{self.steal_path}/conf.json", "w") as file:
+            json.dump(params, file, indent=4)
 
     def check_lib(self):
         if not os.path.isfile(f"{self.steal_path}/library.csv"):
