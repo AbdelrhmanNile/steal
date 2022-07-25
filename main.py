@@ -538,9 +538,7 @@ class StealApp(App):
         self.lib = read_csv(f"{self.steal_path}/library.csv")
 
     def check_conf(self):  # function to check if conf path and file exit
-        if os.path.exists(self.steal_path) and os.path.isfile(
-            f"{self.steal_path}/conf.json"  # if path and config file exist exit the function
-        ):
+        if os.path.exists(f"{self.steal_path}/conf.json"): # if path and config file exist exit the function
             return
 
         if not os.path.isdir(self.steal_path): # if path doesnt exit
