@@ -223,7 +223,6 @@ class Steal:
         # parse into JSON however you like...
 
         data = json.loads(byte_array)
-        s = json.dumps(data, indent=4, sort_keys=True)
 
         with open("mine.json", "w", encoding="utf-8") as jsonf:
             jsonf.write(json.dumps(data, indent=4))
@@ -252,7 +251,6 @@ class Steal:
         # parse into JSON however you like...
 
         data = json.loads(byte_array)
-        s = json.dumps(data, indent=4, sort_keys=True)
 
         with open("mine.json", "w", encoding="utf-8") as jsonf:
             jsonf.write(json.dumps(data, indent=4))
