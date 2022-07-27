@@ -1,11 +1,11 @@
 from bs4 import BeautifulSoup
-import re
+#import re
 import numpy as np
 import pandas as pd
-import sys
+#import sys
 import cfscrape
 import threading
-import os
+#import os
 import csv
 import json
 from igdb.wrapper import IGDBWrapper
@@ -185,7 +185,6 @@ class Steal:
     def to_json(self):
         print("converting csv to json")
         data = {}
-        n = 1
         # Open a csv reader called DictReader
         with open(f"{self.csv_name}.csv", encoding="utf-8") as csvf:
             csvReader = csv.DictReader(csvf)
