@@ -48,11 +48,11 @@ class UpdateBtn(Button):
         for i in range(len(app.lib)):
             app.library.layout.add_widget(
                 Card(
-                    cover_url=app.lib["cover"][i],
-                    g_name=app.lib["name"][i],
-                    start_script=app.lib["script"][i],
-                    size_hint_y=None,
-                    height=40,
+                    cover_url = app.lib["cover"][i],
+                    g_name = app.lib["name"][i],
+                    start_script = app.lib["script"][i],
+                    size_hint_y = None,
+                    height = 40,
                 )
             )
 
@@ -84,20 +84,18 @@ class DownloadBtn(Button):
             ## extract zpaq and get folder
             game_dir = arc_file[:-5:]
             command = f"cd {app.conf['lib_path']} && zpaq x {arc_file}"
-            zpaq_task = multiprocessing.Process(
-                target=os.system, args=(f"{command}",)
+            multiprocessing.Process(
+                target = os.system, args = (f"{command}",)
             ).start()
             start_script = f"{self.g_pltfrm[0]}start.sh"
-
         elif arc_type == "zst":
             ## extract zst and get folder name
             game_dir = arc_file[:-8:]
             command = f"cd {app.conf['lib_path']} && tar -xvf {arc_file}"
-            zst_task = multiprocessing.Process(
-                target=os.system, args=(f"{command}",)
+            multiprocessing.Process(
+                target = os.system, args = (f"{command}",)
             ).start()
             start_script = "start.sh"
-
         else:
             ## dwarfs
             game_dir = self.get_game_dir_dwarfs()
@@ -106,7 +104,7 @@ class DownloadBtn(Button):
         params = f"{self.g_name},{self.g_cover},{app.conf['lib_path']}/{game_dir}/{start_script}\n"
 
         ## add to library csv
-        with open(f"{app.steal_path}/library.csv", "a", encoding='utf-8') as file:
+        with open(f"{app.steal_path}/library.csv", "a", encoding = 'utf-8') as file:
             file.write(params)
 
         app.lib = read_csv(f"{app.steal_path}/library.csv")
@@ -115,10 +113,7 @@ class DownloadBtn(Button):
         game_dir = ""
         for root, dirs, files in os.walk(app.conf["lib_path"]):
             for dirname in dirs:
-                if (
-                    dirname.find(self.g_name[1:].split(" ", 1)[0].replace(":", ""))
-                    != -1
-                ):
+                if dirname.find(self.g_name[1:].split(" ", 1)[0].replace(":", "")) != -1:
                     game_dir = dirname
                     break
             break
@@ -128,12 +123,10 @@ class DownloadBtn(Button):
     def get_arc_type(self):
         for root, dirs, files in os.walk(app.conf["lib_path"]):
             for filename in files:
-                if (
-                    filename.find(self.g_name[1:].split(" ", 1)[0]) != -1
-                ):
-                    if (filename.find(".zpaq") != -1):
+                if filename.find(self.g_name[1:].split(" ", 1)[0]) != -1:
+                    if filename.find(".zpaq") != -1:
                         return filename, "zpaq"
-                    if (filename.find(".zst") != -1):
+                    if filename.find(".zst") != -1:
                         return filename, "zst"
         return None, "dwarfs"
 
@@ -141,7 +134,7 @@ class DownloadBtn(Button):
         self.disabled = True
         self.size_hint_min_x = 200
         self.right = 1000
-       
+
         self.text = "Download in progress..."
         download_task = multiprocessing.Process(target=self.download)
         download_task.start()
@@ -177,20 +170,18 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
         self.g_pltfrm = g_pltfrm
         self.start_script = start_script
         self.g_summary = g_summary
-        self.launch_game_proc = multiprocessing.Process(
-            target=self.launch_game, name="launch_game"
-        )
+        self.launch_game_proc = multiprocessing.Process(target=self.launch_game, name="launch_game")
 
     def on_press(self):
         if self.g_magnet:
             app.Sm.gamescr.clear_widgets()
             app.Sm.gamescr.layout = GameDetailsLayout(
-                g_cover_url=self.g_cover_url,
-                g_name=self.g_name,
-                g_size=self.g_size,
-                g_magnet=self.g_magnet,
-                g_pltfrm=self.g_pltfrm,
-                g_summary=self.g_summary,
+                g_cover_url = self.g_cover_url,
+                g_name = self.g_name,
+                g_size = self.g_size,
+                g_magnet = self.g_magnet,
+                g_pltfrm = self.g_pltfrm,
+                g_summary = self.g_summary,
             )
             app.Sm.gamescr.add_widget(app.Sm.gamescr.layout)
 
@@ -203,15 +194,13 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
                 if not self.launch_game_proc.is_alive():
                     self.launch_game_proc.start()
                 else:
-                    print(
-                        "WARNING: game process is still alive, cannot launch game twice"
-                    )
+                    print("WARNING: game process is still alive, cannot launch game twice")
             except AssertionError:
                 self.launch_game_proc.kill()
                 self.launch_game_proc.join()
                 self.launch_game_proc.close()
                 self.launch_game_proc = multiprocessing.Process(
-                    target=self.launch_game, name="launch_game"
+                    target = self.launch_game, name = "launch_game"
                 )
                 self.launch_game_proc.start()
 
@@ -222,13 +211,13 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
 class Card(BoxLayout):
     def __init__(
         self,
-        cover_url=None,
-        g_name=None,
-        g_size=None,
-        g_magnet=None,
-        g_pltfrm=None,
-        start_script=None,
-        g_summary=None,
+        cover_url = None,
+        g_name = None,
+        g_size = None,
+        g_magnet = None,
+        g_pltfrm = None,
+        start_script = None,
+        g_summary = None,
         **kwargs,
     ):
         super().__init__(**kwargs)
@@ -237,24 +226,24 @@ class Card(BoxLayout):
         self.size = (170, 270)
         self.padding = (7, 7)
         self.cover = BtnAsyncImage(
-            source=cover_url
+            source = cover_url
             if cover_url is not None
             else "https://i.imgur.com/tbTWk2n.jpg",
-            size_hint=(1, 1),
+            size_hint = (1, 1),
             g_cover_url=cover_url
             if cover_url is not None
             else "https://i.imgur.com/tbTWk2n.jpg",
-            g_name=g_name,
-            g_size=g_size,
-            g_magnet=g_magnet,
-            g_pltfrm=g_pltfrm,
-            start_script=start_script,
-            g_summary=g_summary,
+            g_name = g_name,
+            g_size = g_size,
+            g_magnet = g_magnet,
+            g_pltfrm = g_pltfrm,
+            start_script = start_script,
+            g_summary = g_summary,
         )
         self.name = Label(
-            text=g_name if len(g_name) <= 13 else g_name[:11] + "....",
-            size_hint=(0.7, 0.1),
-            padding=(0.2, 0),
+            text = g_name if len(g_name) <= 13 else g_name[:11] + "....",
+            size_hint = (0.7, 0.1),
+            padding = (0.2, 0),
         )
         self.add_widget(self.cover)
         self.add_widget(self.name)
@@ -285,14 +274,14 @@ class SearchBar(TextInput):
             game = response[i]
             app.browse.layout.add_widget(
                 Card(
-                    cover_url=game["cover"],
-                    g_name=game["name"],
-                    g_size=game["size"],
-                    g_magnet=game["magnet"],
-                    g_pltfrm=game["pltfrm"],
-                    g_summary=game["summary"],
-                    size_hint_y=None,
-                    height=40,
+                    cover_url = game["cover"],
+                    g_name = game["name"],
+                    g_size = game["size"],
+                    g_magnet = game["magnet"],
+                    g_pltfrm = game["pltfrm"],
+                    g_summary = game["summary"],
+                    size_hint_y = None,
+                    height = 40,
                 )
             )
         app.lib = read_csv(f"{app.steal_path}/library.csv")
@@ -394,14 +383,14 @@ class BrowseTabLayout(ScrollView):
             game = self.response[i]
             self.cards.append(
                 Card(
-                    cover_url=game["cover"],
-                    g_name=game["name"],
-                    g_size=game["size"],
-                    g_magnet=game["magnet"],
-                    g_pltfrm=game["pltfrm"],
-                    g_summary=game["summary"],
-                    size_hint_y=None,
-                    height=40,
+                    cover_url = game["cover"],
+                    g_name = game["name"],
+                    g_size = game["size"],
+                    g_magnet = game["magnet"],
+                    g_pltfrm = game["pltfrm"],
+                    g_summary = game["summary"],
+                    size_hint_y = None,
+                    height = 40,
                 )
             )
 
@@ -410,7 +399,7 @@ class LibraryTabLayout(ScrollView):
     def __init__(self):
         super().__init__()
         self.layout = StackLayout(size_hint_y=None)
-        self.layout.bind(minimum_height=self.layout.setter("height"))
+        self.layout.bind(minimum_height = self.layout.setter("height"))
         self.cards = []
 
         threading.Thread(target=self.create_cards, name="create_cards_lib").run()
@@ -426,11 +415,11 @@ class LibraryTabLayout(ScrollView):
         for i in range(len(app.lib)):
             self.cards.append(
                 Card(
-                    cover_url=app.lib["cover"][i],
-                    g_name=app.lib["name"][i],
-                    start_script=app.lib["script"][i],
-                    size_hint_y=None,
-                    height=40,
+                    cover_url = app.lib["cover"][i],
+                    g_name = app.lib["name"][i],
+                    start_script = app.lib["script"][i],
+                    size_hint_y = None,
+                    height = 40,
                 )
             )
 
@@ -446,57 +435,57 @@ class GameDetailsLayout(FloatLayout):
         self.g_pltfrm = g_pltfrm
         self.g_summary = g_summary
 
-        self.game_info = BoxLayout(orientation="vertical", size_hint=(0.2, 0.2))
+        self.game_info = BoxLayout(orientation = "vertical", size_hint = (0.2, 0.2))
         self.game_info.pos_hint = {"center_x": 0.5, "top": 0.9}
 
         self.cover = AsyncImage(
-            source=g_cover_url,
-            size_hint=(0.58, 0.58),
-            pos=(-180, 140),
+            source = g_cover_url,
+            size_hint = (0.58, 0.58),
+            pos = (-180, 140),
         )
 
         self.back_to_browse_btn = BackToBrowseBtn(
-            text="back", size_hint=(0.08, 0.05), pos=(15, 650)
+            text = "back", size_hint = (0.08, 0.05), pos = (15, 650)
         )
         self.add_widget(self.cover)
         self.add_widget(self.back_to_browse_btn)
 
         self.labelg_name = Label(
-            text=self.g_name,
-            font_size=30,
-            size_hint=(1, 0.01),
-            pos_hint={"x": -0.077, "y": 0.85},
-            text_size=(1000, None),
+            text = self.g_name,
+            font_size = 30,
+            size_hint = (1, 0.01),
+            pos_hint = {"x": -0.077, "y": 0.85},
+            text_size = (1000, None),
         )
         self.add_widget(self.labelg_name)
 
         self.g_summary_label = Label(
-            text=f"{self.g_summary}",
-            font_size=19,
-            size_hint=(1, 0.01),
-            pos_hint={"x": 0.12, "y": 0.65},
-            text_size=(800, None),
+            text = f"{self.g_summary}",
+            font_size = 19,
+            size_hint = (1, 0.01),
+            pos_hint = {"x": 0.12, "y": 0.65},
+            text_size = (800, None),
         )
 
         self.add_widget(self.g_summary_label)
 
         self.g_size_pltfrm_label = Label(
-            text=f"{self.g_size} | {self.g_pltfrm}",
-            font_size=17,
-            size_hint=(1, 0.01),
-            pos_hint={"x": 0.33, "y": 0.28},
+            text = f"{self.g_size} | {self.g_pltfrm}",
+            font_size = 17,
+            size_hint = (1, 0.01),
+            pos_hint = {"x": 0.33, "y": 0.28},
         )
 
         self.add_widget(self.g_size_pltfrm_label)
         self.add_widget(self.game_info)
 
         self.download_btn = DownloadBtn(
-            name=self.g_name,
-            magnet=self.g_magnet,
-            cover=g_cover_url,
-            pltfrm=g_pltfrm,
-            size_hint=(0.08, 0.05),
-            pos=(950, 130),
+            name = self.g_name,
+            magnet = self.g_magnet,
+            cover = g_cover_url,
+            pltfrm = g_pltfrm,
+            size_hint = (0.08, 0.05),
+            pos = (950, 130),
         )
         self.add_widget(self.download_btn)
 
@@ -532,7 +521,7 @@ class StealApp(App):
         # if conf.json doesnt exist make it
         self.check_conf()
         # load config as json obj
-        self.conf = json.load(open(f"{self.steal_path}/conf.json", encoding='utf-8'))
+        self.conf = json.load(open(f"{self.steal_path}/conf.json", encoding = 'utf-8'))
 
         self.check_lib()
         self.lib = read_csv(f"{self.steal_path}/library.csv")
@@ -546,14 +535,14 @@ class StealApp(App):
         # config params
         params = {"lib_path": f"/home/{self.usr}/Games", "num_of_cards": "50"}
         # dump the config file
-        with open(f"{self.steal_path}/conf.json", "w", encoding='utf-8') as file:
-            json.dump(params, file, indent=4)
+        with open(f"{self.steal_path}/conf.json", "w", encoding = 'utf-8') as file:
+            json.dump(params, file, indent = 4)
 
     def check_lib(self):
         if not os.path.isfile(f"{self.steal_path}/library.csv"):
             params = "name,cover,script\n"
 
-            with open(f"{self.steal_path}/library.csv", "a", encoding='utf-8') as file:
+            with open(f"{self.steal_path}/library.csv", "a", encoding = 'utf-8') as file:
                 file.write(params)
 
 
