@@ -1,4 +1,10 @@
 import os
+import threading
+import pwd
+import json
+import multiprocessing
+from pandas import read_csv
+from pebble import concurrent
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -12,14 +18,8 @@ from kivy.uix.button import Button
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelHeader
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
-import threading
-from steal_db_api import StealApi
-import pwd
-import json
-import multiprocessing
-from pandas import read_csv
-from pebble import concurrent
 from kivy.config import Config
+from steal_db_api import StealApi
 
 # Disable multitouch
 Config.set("input", "mouse", "mouse,multitouch_on_demand")
@@ -37,7 +37,7 @@ Window.bind(on_resize=reSize)
 
 class UpdateBtn(Button):
     def __init__(self, **kwargs):
-        super(UpdateBtn, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.background_color = (0.67, 0.70, 0.75, 1)
         self.text = "Update"
 
@@ -62,7 +62,7 @@ class UpdateBtn(Button):
 
 class DownloadBtn(Button):
     def __init__(self, name, magnet, cover, pltfrm, **kwargs):
-        super(DownloadBtn, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.g_magnet = magnet
         self.g_name = name
         self.g_cover = cover
@@ -106,7 +106,7 @@ class DownloadBtn(Button):
         params = f"{self.g_name},{self.g_cover},{app.conf['lib_path']}/{game_dir}/{start_script}\n"
 
         ## add to library csv
-        with open(f"{app.steal_path}/library.csv", "a") as file:
+        with open(f"{app.steal_path}/library.csv", "a", encoding='utf-8') as file:
             file.write(params)
 
         app.lib = read_csv(f"{app.steal_path}/library.csv")
@@ -149,7 +149,7 @@ class DownloadBtn(Button):
 
 class BackToBrowseBtn(Button):
     def __init__(self, **kwargs):
-        super(BackToBrowseBtn, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.background_color = (0.67, 0.70, 0.75, 1)
 
     def on_release(self):
@@ -169,7 +169,7 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
         g_summary,
         **kwargs,
     ):
-        super(BtnAsyncImage, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.g_cover_url = g_cover_url
         self.g_name = g_name
         self.g_size = g_size
@@ -231,18 +231,18 @@ class Card(BoxLayout):
         g_summary=None,
         **kwargs,
     ):
-        super(Card, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.orientation = "vertical"
         self.size_hint = (None, None)
         self.size = (170, 270)
         self.padding = (7, 7)
         self.cover = BtnAsyncImage(
             source=cover_url
-            if cover_url != None
+            if cover_url is not None
             else "https://i.imgur.com/tbTWk2n.jpg",
             size_hint=(1, 1),
             g_cover_url=cover_url
-            if cover_url != None
+            if cover_url is not None
             else "https://i.imgur.com/tbTWk2n.jpg",
             g_name=g_name,
             g_size=g_size,
@@ -262,7 +262,7 @@ class Card(BoxLayout):
 
 class SearchBar(TextInput):
     def __init__(self, **kwargs):
-        super(SearchBar, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.multiline = False
         self.background_color = (0.12, 0.13, 0.16, 1)
         self.foreground_color = (1, 1, 1, 1)
@@ -301,7 +301,7 @@ class SearchBar(TextInput):
 ########## SCREENS #################
 class MainScreen(Screen):
     def __init__(self, **kwargs):
-        super(MainScreen, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.name = "main_screen"
 
         self.add_widget(MainLayout())
@@ -309,7 +309,7 @@ class MainScreen(Screen):
 
 class GameScreen(Screen):
     def __init__(self, layout=None, **kwargs):
-        super(GameScreen, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.name = "game_screen"
         self.layout = None
         if layout:
@@ -318,7 +318,7 @@ class GameScreen(Screen):
 
 class ScreensManager(ScreenManager):
     def __init__(self, **kwargs):
-        super(ScreensManager, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.mainscr = MainScreen()
         self.gamescr = GameScreen()
         self.add_widget(self.mainscr)
@@ -328,7 +328,7 @@ class ScreensManager(ScreenManager):
 ######### LAYOUTS ###########
 class MainLayout(TabbedPanel):
     def __init__(self, **kwargs):
-        super(MainLayout, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.tab_width = None
         self.background_color = (0.12, 0.13, 0.16, 1)
@@ -368,8 +368,8 @@ class MainLayout(TabbedPanel):
 
 
 class BrowseTabLayout(ScrollView):
-    def __init__(self, response=None, **kwargs):
-        super(BrowseTabLayout, self).__init__()
+    def __init__(self):
+        super().__init__()
         self.layout = StackLayout(size_hint_y=None)
         self.layout.bind(minimum_height=self.layout.setter("height"))
 
@@ -407,8 +407,8 @@ class BrowseTabLayout(ScrollView):
 
 
 class LibraryTabLayout(ScrollView):
-    def __init__(self, **kwargs):
-        super(LibraryTabLayout, self).__init__()
+    def __init__(self):
+        super().__init__()
         self.layout = StackLayout(size_hint_y=None)
         self.layout.bind(minimum_height=self.layout.setter("height"))
         self.cards = []
@@ -439,7 +439,7 @@ class GameDetailsLayout(FloatLayout):
     def __init__(
         self, g_cover_url, g_name, g_size, g_magnet, g_pltfrm, g_summary, **kwargs
     ):
-        super(GameDetailsLayout, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.g_name = g_name
         self.g_size = g_size
         self.g_magnet = g_magnet
@@ -499,7 +499,7 @@ class GameDetailsLayout(FloatLayout):
             pos=(950, 130),
         )
         self.add_widget(self.download_btn)
-        
+
         for i in range(len(app.lib)):
             if self.g_name == app.lib["name"][i]:
                 self.download_btn.disabled = True
@@ -532,7 +532,7 @@ class StealApp(App):
         # if conf.json doesnt exist make it
         self.check_conf()
         # load config as json obj
-        self.conf = json.load(open(f"{self.steal_path}/conf.json"))
+        self.conf = json.load(open(f"{self.steal_path}/conf.json", encoding='utf-8'))
 
         self.check_lib()
         self.lib = read_csv(f"{self.steal_path}/library.csv")
@@ -546,14 +546,14 @@ class StealApp(App):
         # config params
         params = {"lib_path": f"/home/{self.usr}/Games", "num_of_cards": "50"}
         # dump the config file
-        with open(f"{self.steal_path}/conf.json", "w") as file:
+        with open(f"{self.steal_path}/conf.json", "w", encoding='utf-8') as file:
             json.dump(params, file, indent=4)
 
     def check_lib(self):
         if not os.path.isfile(f"{self.steal_path}/library.csv"):
             params = "name,cover,script\n"
 
-            with open(f"{self.steal_path}/library.csv", "a") as file:
+            with open(f"{self.steal_path}/library.csv", "a", encoding='utf-8') as file:
                 file.write(params)
 
 
