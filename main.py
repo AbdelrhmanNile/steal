@@ -84,7 +84,7 @@ class DownloadBtn(Button):
             ## extract zpaq and get folder
             game_dir = arc_file[:-5:]
             command = f"cd {app.conf['lib_path']} && zpaq x {arc_file}"
-            zpaq_task = multiprocessing.Process(
+            multiprocessing.Process(
                 target=os.system, args=(f"{command}",)
             ).start()
             start_script = f"{self.g_pltfrm[0]}start.sh"
@@ -93,7 +93,7 @@ class DownloadBtn(Button):
             ## extract zst and get folder name
             game_dir = arc_file[:-8:]
             command = f"cd {app.conf['lib_path']} && tar -xvf {arc_file}"
-            zst_task = multiprocessing.Process(
+            multiprocessing.Process(
                 target=os.system, args=(f"{command}",)
             ).start()
             start_script = "start.sh"
@@ -511,7 +511,7 @@ class GameDetailsLayout(FloatLayout):
 
 class StealApp(App):
     def build(self):
-        init_task = threading.Thread(target=self.init_steal, name="init_steal").run()
+        threading.Thread(target=self.init_steal, name="init_steal").run()
         self.browse = BrowseTabLayout()
         self.library = LibraryTabLayout()
         self.Sm = ScreensManager()
