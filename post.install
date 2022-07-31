@@ -1,0 +1,9 @@
+post_install() {
+	pip install pebble
+	npm install webtorrent-cli -g
+	echo "#####################################################################"
+	echo "                                                                     "
+	echo "IMPORTANT: install dwarfs-bin and zpaq from the AUR using yay or paru"
+	echo "                                                                     "
+	echo "#####################################################################"
+}
