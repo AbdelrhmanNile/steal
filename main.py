@@ -368,7 +368,7 @@ class MainLayout(TabbedPanel):
 
 
 class BrowseTabLayout(ScrollView):
-    def __init__(self, response=None, **kwargs):
+    def __init__(self):
         super(BrowseTabLayout, self).__init__()
         self.layout = StackLayout(size_hint_y=None)
         self.layout.bind(minimum_height=self.layout.setter("height"))
@@ -407,7 +407,7 @@ class BrowseTabLayout(ScrollView):
 
 
 class LibraryTabLayout(ScrollView):
-    def __init__(self, **kwargs):
+    def __init__(self):
         super(LibraryTabLayout, self).__init__()
         self.layout = StackLayout(size_hint_y=None)
         self.layout.bind(minimum_height=self.layout.setter("height"))
