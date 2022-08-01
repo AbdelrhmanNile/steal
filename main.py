@@ -1,4 +1,9 @@
 import os
+import threading
+import json
+import multiprocessing
+from pandas import read_csv
+from pebble import concurrent
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -11,26 +16,17 @@ from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.uix.button import Button
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelHeader
 from kivy.uix.scrollview import ScrollView
-from kivy.core.window import Window
-import threading
-from steal_db_api import StealApi
-import pwd
-import json
-import multiprocessing
-from pandas import read_csv
-from pebble import concurrent
 from kivy.config import Config
+from kivy.core.window import Window
+from steal_db_api import StealApi
 
 # Disable multitouch
 Config.set("input", "mouse", "mouse,multitouch_on_demand")
 
 _fixed_size = Window.size = (1200, 700)
 
-
 def reSize(*args):
     Window.size = _fixed_size
-    return True
-
 
 Window.bind(on_resize=reSize)
 ############ CUSTOM ELEMENTS ###################
@@ -112,12 +108,7 @@ class DownloadBtn(Button):
         game_dir = ""
         for root, dirs, files in os.walk(app.conf["lib_path"]):
             for dirname in dirs:
-                if (
-                    dirname.find(
-                        str(self.g_name[1:].split(" ", 1)[0].replace(":", "")).title()
-                    )
-                    != -1
-                ):
+                if  str(self.g_name[1:].split(" ", 1)[0].replace(":", "")).title() in dirname:
                     game_dir = dirname
                     break
             break
@@ -127,10 +118,10 @@ class DownloadBtn(Button):
     def get_arc_type(self):
         for root, dirs, files in os.walk(app.conf["lib_path"]):
             for filename in files:
-                if filename.find(self.g_name[1:].split(" ", 1)[0]) != -1:
-                    if filename.find(".zpaq") != -1:
+                if self.g_name[1:].split(" ", 1)[0] in filename:
+                    if ".zpaq" in filename:
                         return filename, "zpaq"
-                    if filename.find(".zst") != -1:
+                    if ".zst" in filename:
                         return filename, "zst"
         return None, "dwarfs"
 
@@ -276,23 +267,22 @@ class SearchBar(TextInput):
         task = self.get_search(self.text)
         response = task.result()
         app.browse.layout.clear_widgets()
-        num_cards = int(app.conf["num_of_cards"]) if self.text == "" else len(response)
 
-        for i in range(num_cards):
-            game = response[i]
-            app.browse.layout.add_widget(
-                Card(
-                    cover_url=game["cover"],
-                    g_name=game["name"],
-                    g_size=game["size"],
-                    g_magnet=game["magnet"],
-                    g_pltfrm=game["pltfrm"],
-                    g_summary=game["summary"],
-                    size_hint_y=None,
-                    height=40,
+        if self.text !=  "":
+            for i in range(len(response)):
+                game = response[i]
+                app.browse.layout.add_widget(
+                    Card(
+                        cover_url=game["cover"],
+                        g_name=game["name"],
+                        g_size=game["size"],
+                        g_magnet=game["magnet"],
+                        g_pltfrm=game["pltfrm"],
+                        g_summary=game["summary"],
+                        size_hint_y=None,
+                        height=40,
+                    )
                 )
-            )
-        app.lib = read_csv(f"{app.steal_path}/library.csv")
 
 
 ########## SCREENS #################
@@ -518,7 +508,7 @@ class StealApp(App):
 
     def init_steal(self):
         # get linux username
-        self.usr = pwd.getpwuid(os.getuid())[0]
+        self.usr = os.getlogin()
         # define config path
         self.steal_path = f"/home/{self.usr}/.config/steal"
         # if conf.json doesnt exist make it
@@ -563,3 +553,4 @@ if __name__ == "__main__":
     os.system("clear")
     print("see you space cowboy...")
     print("CTRL + c to exit")
+    
