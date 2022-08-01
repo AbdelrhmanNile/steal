@@ -26,6 +26,7 @@ Config.set("input", "mouse", "mouse,multitouch_on_demand")
 
 _fixed_size = Window.size = (1200, 700)
 
+
 def reSize(*args):
     Window.size = _fixed_size
     return True
@@ -84,18 +85,14 @@ class DownloadBtn(Button):
             ## extract zpaq and get folder
             game_dir = arc_file[:-5:]
             command = f"cd {app.conf['lib_path']} && zpaq x {arc_file}"
-            multiprocessing.Process(
-                target=os.system, args=(f"{command}",)
-            ).start()
+            multiprocessing.Process(target=os.system, args=(f"{command}",)).start()
             start_script = f"{self.g_pltfrm[0]}start.sh"
 
         elif arc_type == "zst":
             ## extract zst and get folder name
             game_dir = arc_file[:-8:]
             command = f"cd {app.conf['lib_path']} && tar -xvf {arc_file}"
-            multiprocessing.Process(
-                target=os.system, args=(f"{command}",)
-            ).start()
+            multiprocessing.Process(target=os.system, args=(f"{command}",)).start()
             start_script = "start.sh"
 
         else:
@@ -106,7 +103,7 @@ class DownloadBtn(Button):
         params = f"{self.g_name},{self.g_cover},{app.conf['lib_path']}/{game_dir}/{start_script}\n"
 
         ## add to library csv
-        with open(f"{app.steal_path}/library.csv", "a", encoding='utf-8') as file:
+        with open(f"{app.steal_path}/library.csv", "a", encoding="utf-8") as file:
             file.write(params)
 
         app.lib = read_csv(f"{app.steal_path}/library.csv")
@@ -116,7 +113,9 @@ class DownloadBtn(Button):
         for root, dirs, files in os.walk(app.conf["lib_path"]):
             for dirname in dirs:
                 if (
-                    dirname.find(self.g_name[1:].split(" ", 1)[0].replace(":", ""))
+                    dirname.find(
+                        str(self.g_name[1:].split(" ", 1)[0].replace(":", "")).title()
+                    )
                     != -1
                 ):
                     game_dir = dirname
@@ -128,9 +127,7 @@ class DownloadBtn(Button):
     def get_arc_type(self):
         for root, dirs, files in os.walk(app.conf["lib_path"]):
             for filename in files:
-                if (
-                    filename.find(self.g_name[1:].split(" ", 1)[0]) != -1
-                ):
+                if filename.find(self.g_name[1:].split(" ", 1)[0]) != -1:
                     if filename.find(".zpaq") != -1:
                         return filename, "zpaq"
                     if filename.find(".zst") != -1:
@@ -527,28 +524,30 @@ class StealApp(App):
         # if conf.json doesnt exist make it
         self.check_conf()
         # load config as json obj
-        self.conf = json.load(open(f"{self.steal_path}/conf.json", encoding='utf-8'))
+        self.conf = json.load(open(f"{self.steal_path}/conf.json", encoding="utf-8"))
 
         self.check_lib()
         self.lib = read_csv(f"{self.steal_path}/library.csv")
 
     def check_conf(self):  # function to check if conf path and file exit
-        if os.path.exists(f"{self.steal_path}/conf.json"): # if path and config file exist exit the function
+        if os.path.exists(
+            f"{self.steal_path}/conf.json"
+        ):  # if path and config file exist exit the function
             return
 
-        if not os.path.isdir(self.steal_path): # if path doesn't exit
+        if not os.path.isdir(self.steal_path):  # if path doesn't exit
             os.makedirs(self.steal_path)  # make it
         # config params
         params = {"lib_path": f"/home/{self.usr}/Games", "num_of_cards": "50"}
         # dump the config file
-        with open(f"{self.steal_path}/conf.json", "w", encoding='utf-8') as file:
+        with open(f"{self.steal_path}/conf.json", "w", encoding="utf-8") as file:
             json.dump(params, file, indent=4)
 
     def check_lib(self):
         if not os.path.isfile(f"{self.steal_path}/library.csv"):
             params = "name,cover,script\n"
 
-            with open(f"{self.steal_path}/library.csv", "a", encoding='utf-8') as file:
+            with open(f"{self.steal_path}/library.csv", "a", encoding="utf-8") as file:
                 file.write(params)
 
 
