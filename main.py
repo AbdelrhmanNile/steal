@@ -267,22 +267,23 @@ class SearchBar(TextInput):
         task = self.get_search(self.text)
         response = task.result()
         app.browse.layout.clear_widgets()
+        num_cards = int(app.conf["num_of_cards"]) if self.text == "" else len(response)
 
-        if self.text !=  "":
-            for i in range(len(response)):
-                game = response[i]
-                app.browse.layout.add_widget(
-                    Card(
-                        cover_url=game["cover"],
-                        g_name=game["name"],
-                        g_size=game["size"],
-                        g_magnet=game["magnet"],
-                        g_pltfrm=game["pltfrm"],
-                        g_summary=game["summary"],
-                        size_hint_y=None,
-                        height=40,
+        for i in range(num_cards):
+            game = response[i]
+            app.browse.layout.add_widget(
+                Card(
+                    cover_url=game["cover"],
+                    g_name=game["name"],
+                    g_size=game["size"],
+                    g_magnet=game["magnet"],
+                    g_pltfrm=game["pltfrm"],
+                    g_summary=game["summary"],
+                    size_hint_y=None,
+                    height=40,
                     )
                 )
+        app.lib = read_csv(f"{app.steal_path}/library.csv")
 
 
 ########## SCREENS #################
@@ -553,4 +554,3 @@ if __name__ == "__main__":
     os.system("clear")
     print("see you space cowboy...")
     print("CTRL + c to exit")
-    
