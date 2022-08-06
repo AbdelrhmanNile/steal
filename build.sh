@@ -14,7 +14,7 @@ cp ${APP_NAME}.basis $OUTPUT
 
 # create a tar file of the Hand And Foot app
 rm -f tmp.tar
-tar cf steal.tar *.py *.kv
+tar cf steal.tar *.py
 
 # add the uuencoded version of the app to the end of the output file
 uuencode steal.tar steal.tar >> $OUTPUT
