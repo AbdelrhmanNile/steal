@@ -25,8 +25,10 @@ Config.set("input", "mouse", "mouse,multitouch_on_demand")
 
 _fixed_size = Window.size = (1200, 700)
 
+
 def reSize(*args):
     Window.size = _fixed_size
+
 
 Window.bind(on_resize=reSize)
 ############ CUSTOM ELEMENTS ###################
@@ -108,7 +110,10 @@ class DownloadBtn(Button):
         game_dir = ""
         for root, dirs, files in os.walk(app.conf["lib_path"]):
             for dirname in dirs:
-                if  str(self.g_name[1:].split(" ", 1)[0].replace(":", "")).title() in dirname:
+                if (
+                    str(self.g_name[1:].split(" ", 1)[0].replace(":", "")).title()
+                    in dirname
+                ):
                     game_dir = dirname
                     break
             break
@@ -281,8 +286,8 @@ class SearchBar(TextInput):
                     g_summary=game["summary"],
                     size_hint_y=None,
                     height=40,
-                    )
                 )
+            )
         app.lib = read_csv(f"{app.steal_path}/library.csv")
 
 
@@ -430,7 +435,7 @@ class GameDetailsLayout(FloatLayout):
         self.g_size = g_size
         self.g_magnet = g_magnet
         self.g_pltfrm = g_pltfrm
-        self.g_summary = g_summary
+        self.g_summary = str(g_summary).splitlines()[0]
 
         self.game_info = BoxLayout(orientation="vertical", size_hint=(0.2, 0.2))
         self.game_info.pos_hint = {"center_x": 0.5, "top": 0.9}
