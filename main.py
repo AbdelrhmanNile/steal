@@ -322,6 +322,8 @@ class MainLayout(TabbedPanel):
         self.background_color = (0.12, 0.13, 0.16, 1)
 
         self.browser = TabbedPanelHeader(text="Browse")
+        self.browser.background_color = (.24, .27, .32, 1)
+        self.browser.background_down = '.12, .13, .16, 1'
         self.browser.content = app.browse
         self.add_widget(self.browser)
         self.browser.size_hint_x = None
@@ -331,6 +333,8 @@ class MainLayout(TabbedPanel):
         self.library = TabbedPanelHeader(text="Library")
         self.library.size_hint_x = None
         self.library.width = Window.width / 5
+        self.library.background_color = (.24, .27, .32, 1)
+        self.library.background_down = '.12, .13, .16, 1'
         self.library.content = app.library
         self.add_widget(self.library)
 
