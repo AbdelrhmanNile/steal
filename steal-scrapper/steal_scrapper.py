@@ -1,16 +1,16 @@
-from bs4 import BeautifulSoup
-#import re
-import numpy as np
-import pandas as pd
-#import sys
-import cfscrape
 import threading
-#import os
 import csv
 import json
-from igdb.wrapper import IGDBWrapper
 import requests
+from bs4 import BeautifulSoup
+import numpy as np
+import pandas as pd
+import cfscrape
+from igdb.wrapper import IGDBWrapper
 from pymongo import MongoClient
+#import re
+#import os
+#import sys
 
 
 class Steal:
@@ -268,9 +268,9 @@ class Steal:
 
         for i in range(num + 1):
             try:
-                if df[i]["magnet"].find("Wine") != -1:
+                if "Wine" in df[i]["magnet"]:
                     df[i]["pltfrm"] = "wine"
-                elif df[i]["magnet"].find("Native") != -1:
+                elif "Native" in df[i]["magnet"]:
                     df[i]["pltfrm"] = "native"
             except KeyError:
                 continue
@@ -279,7 +279,7 @@ class Steal:
         print("trimming names and fetching covers")
         for i in range(num + 1):
             try:
-                if df[i]["name"].find("-") != -1:
+                if "-" in df[i]["name"]:
                     df[i]["name"] = df[i]["name"].split("-", 1)[0]
                 else:
                     df[i]["name"] = df[i]["name"].split("[", 1)[0]
