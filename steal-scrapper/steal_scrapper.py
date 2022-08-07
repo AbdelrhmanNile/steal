@@ -52,17 +52,17 @@ class Steal:
 
     def task1(self):
         for url1 in self.splitarr[0]:
-            self.scrape_induvidual(url1)
+            self.scrape_individual(url1)
 
     def task2(self):
         for url2 in self.splitarr[1]:
-            self.scrape_induvidual(url2)
+            self.scrape_individual(url2)
 
     def task3(self):
         for url3 in self.splitarr[2]:
-            self.scrape_induvidual(url3)
+            self.scrape_individual(url3)
 
-    def scrape_induvidual(self, url):
+    def scrape_individual(self, url):
         source = self.scraper.get(url).text
         soup = BeautifulSoup(source, "lxml")
 
