@@ -14,6 +14,11 @@ steaL's database gets updated weekly to fetch new released johncena141 repacks <
 please read [johncena141's documents](https://github.com/jc141x/jc141-bash/tree/master/setup) to understand more about how their repacks work, and double check the dependencies for their repacks
 
 # Install on Arch distros
+option 1: using an AUR helper i.e. yay / paru
+```
+paru -S steal-git
+```
+option 2: from my own repo
 on arch linux distros you can install steaL from [pirate-arch-repo](https://github.com/AbdelrhmanNile/pirate-arch-repo) using pacman
 
 1- add [pirate-arch-repo](https://github.com/AbdelrhmanNile/pirate-arch-repo) to pacman <br />
