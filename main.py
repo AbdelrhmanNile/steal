@@ -209,7 +209,7 @@ class BtnAsyncImage(ButtonBehavior, AsyncImage):
                 self.launch_game_proc.start()
 
     def launch_game(self):
-        os.system(f"sh {self.start_script}")
+        os.system(f"sh \"{self.start_script}\"")
 
 
 class Card(BoxLayout):
